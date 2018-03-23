@@ -158,16 +158,19 @@ module Spree
     def can_transition_from_pending_to_shipped?
       !requires_shipment?
     end
+    deprecate :can_transition_from_pending_to_shipped?, deprecator: Spree::Deprecation
 
     def can_transition_from_pending_to_ready?
       order.can_ship? &&
         inventory_units.all? { |iu| iu.shipped? || iu.allow_ship? || iu.canceled? } &&
         (order.paid? || !Spree::Config[:require_payment_to_ship])
     end
+    deprecate :can_transition_from_pending_to_ready?, deprecator: Spree::Deprecation
 
     def can_transition_from_canceled_to_ready?
       can_transition_from_pending_to_ready?
     end
+    deprecate :can_transition_from_canceled_to_ready?, deprecator: Spree::Deprecation
 
     extend DisplayMoney
     money_methods(
