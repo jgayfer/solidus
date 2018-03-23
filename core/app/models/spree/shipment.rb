@@ -156,16 +156,25 @@ module Spree
     end
 
     def can_transition_from_pending_to_shipped?
+      Spree::Deprecation.warn \
+        'Spree::Shipment#can_transition_from_pending_to_shipped is deprecated. ' \
+        'It is equivalent to the negation of Spree::Shipment#requires_shipment?'
       !requires_shipment?
     end
 
     def can_transition_from_pending_to_ready?
+      Spree::Deprecation.warn \
+        'Spree::Shipment#can_transition_from_pending_to_ready? is deprecated. ' \
+        'Use Spree::Shipment#inventory_can_ship? instead.'
       order.can_ship? &&
         inventory_units.all? { |iu| iu.shipped? || iu.allow_ship? || iu.canceled? } &&
         (order.paid? || !Spree::Config[:require_payment_to_ship])
     end
 
     def can_transition_from_canceled_to_ready?
+      Spree::Deprecation.warn \
+        'Spree::Shipment#can_transition_from_pending_to_ready? is deprecated. ' \
+        'Use Spree::Shipment#inventory_can_ship? instead.'
       can_transition_from_pending_to_ready?
     end
 
